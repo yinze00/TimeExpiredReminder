@@ -15,24 +15,33 @@ chrome.tabs.onRemoved.addListener(tabId => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'startTimer') {
-        startTimer(request.tabId);
+        startTimer(request.tabId, request.minutes);
     }
 });
 
-function startTimer(tabId) {
-    if (!timers[tabId]) {
-        timers[tabId] = { startTime: Date.now(), interval: null };
-        timers[tabId].interval = setInterval(() => updateIcon(tabId), 1000);
+function startTimer(tabId, minutes) {
+    if (timers[tabId]) {
+        clearInterval(timers[tabId].interval);
     }
+
+    timers[tabId] = { endTime: Date.now() + minutes * 60000, interval: null };
+    timers[tabId].interval = setInterval(() => updateIcon(tabId), 1000);
+    updateIcon(tabId);  // Immediately update the icon
 }
 
 function updateIcon(tabId) {
     if (timers[tabId]) {
-        let elapsed = Math.floor((Date.now() - timers[tabId].startTime) / 1000);
-        let minutes = Math.floor(elapsed / 60);
-        let seconds = elapsed % 60;
-        let text = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        chrome.action.setBadgeText({ text, tabId });
+        let remaining = timers[tabId].endTime - Date.now();
+        if (remaining <= 0) {
+            chrome.action.setBadgeText({ text: '0:00', tabId });
+            clearInterval(timers[tabId].interval);
+            delete timers[tabId];
+        } else {
+            let minutes = Math.floor(remaining / 60000);
+            let seconds = Math.floor((remaining % 60000) / 1000);
+            let text = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            chrome.action.setBadgeText({ text, tabId });
+        }
     } else {
         chrome.action.setBadgeText({ text: '', tabId });
     }
