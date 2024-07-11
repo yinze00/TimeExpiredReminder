@@ -3,7 +3,7 @@
     "name": "Tab Reminder",
     "author": "junwei.wang@zju.edu.cn",
     "version": "1.0",
-    "description": "Track time spent on each tab.",
+    "description": "Add a countdown to a web page to remind you to view it in time",
     "permissions": [
         "tabs",
         "storage",
@@ -25,8 +25,7 @@
         }
     },
     "icons": {
-        "16": "clock16.png",
-        "48": "clock48.png",
-        "128": "clock128.png"
+        "48": "alarm-clock48.png",
+        "128": "alarm-clock128.png"
     }
 }
