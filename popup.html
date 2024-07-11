@@ -2,28 +2,33 @@
 <html>
 
 <head>
-    <title>Tab Timer</title>
+    <title>Set Timer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+        }
+
+        #container {
             text-align: center;
         }
 
         input {
-            padding: 5px;
-            font-size: 16px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
+            margin: 5px;
         }
     </style>
 </head>
 
 <body>
-    <input id="timeInput" type="number" min="1" placeholder="Enter minutes" />
-    <button id="startTimer">Start Timer</button>
+    <div id="container">
+        <h1>Set Timer</h1>
+        <label for="minutes">Minutes:</label>
+        <input id="minutes" min="0" value="1">
+        <br>
+        <label for="seconds">Seconds:</label>
+        <input id="seconds" min="0" max="59" value="0">
+        <br>
+        <button id="startButton">Start Timer</button>
+    </div>
     <script src="popup.js"></script>
 </body>
 

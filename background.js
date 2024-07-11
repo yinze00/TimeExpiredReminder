@@ -15,7 +15,7 @@ chrome.tabs.onRemoved.addListener(tabId => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'startTimer') {
-        startTimer(request.tabId, request.minutes);
+        startTimer(request.tabId, request.minutes, request.seconds);
     }
 });
 
@@ -24,7 +24,7 @@ chrome.commands.onCommand.addListener(function (command) {
         console.log('sdfasdfa;;;;;;;;;');
         // chrome.browserAction.openPopup()
 
-        chrome.action.openPopup()
+        // chrome.action.open();
         // chrome.tabs.create({ url: chrome.runtime.getURL("popup.html") });
 
         // let minutes = prompt("Enter the number of minutes for the timer:");
@@ -77,12 +77,12 @@ function createNotification(tabId, title) {
 }
 
 
-function startTimer(tabId, minutes) {
+function startTimer(tabId, minutes, seconds) {
     if (timers[tabId]) {
         clearInterval(timers[tabId].interval);
     }
 
-    timers[tabId] = { endTime: Date.now() + minutes * 60000, interval: null };
+    timers[tabId] = { endTime: Date.now() + minutes * 60000 + seconds * 1000, interval: null };
     timers[tabId].interval = setInterval(() => updateIcon(tabId), 1000);
     updateIcon(tabId);  // Immediately update the icon
 }
