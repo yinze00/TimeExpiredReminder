@@ -1,4 +1,4 @@
-document.getElementById('startTimer').addEventListener('click', () => {
+function Start() {
     const timeInput = document.getElementById('timeInput').value;
     const minutes = parseInt(timeInput);
 
@@ -8,5 +8,15 @@ document.getElementById('startTimer').addEventListener('click', () => {
         });
     } else {
         alert('Please enter a valid number of minutes.');
+    }
+}
+
+document.getElementById('startTimer').addEventListener('click', () => {
+    Start()
+});
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        Start()
     }
 });

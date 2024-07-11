@@ -15,6 +15,15 @@
     "action": {
         "default_popup": "popup.html"
     },
+    "commands": {
+        "start-timer": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+K",
+                "mac": "Command+Shift+K"
+            },
+            "description": "Start the timer"
+        }
+    },
     "icons": {
         "16": "clock16.png",
         "48": "clock48.png",
