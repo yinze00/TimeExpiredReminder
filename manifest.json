@@ -1,12 +1,11 @@
 {
     "manifest_version": 3,
-    "name": "Tab Reminder",
+    "name": "Tab Timer",
+    "author": "junwei.wang@zju.edu.cn",
     "version": "1.0",
-    "description": "Set a timer to remind you to return to a specific tab.",
+    "description": "Track time spent on each tab.",
     "permissions": [
         "tabs",
-        "alarms",
-        "notifications",
         "storage"
     ],
     "background": {
@@ -15,13 +14,9 @@
     "action": {
         "default_popup": "popup.html"
     },
-    "commands": {
-        "open-timer-popup": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+K",
-                "mac": "Command+Shift+K"
-            },
-            "description": "Open the timer popup"
-        }
+    "icons": {
+        "16": "clock16.png",
+        "48": "clock48.png",
+        "128": "clock128.png"
     }
 }

@@ -1,22 +1,39 @@
-chrome.commands.onCommand.addListener((command) => {
-    if (command === "open-timer-popup") {
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        const tabId = tabs[0].id;
-        chrome.storage.local.set({ tabId: tabId }, () => {
-          chrome.action.openPopup();
-        });
-      });
+let timers = {};
+let currentTabId = null;
+
+chrome.tabs.onActivated.addListener(activeInfo => {
+    currentTabId = activeInfo.tabId;
+    updateIcon(currentTabId);
+});
+
+chrome.tabs.onRemoved.addListener(tabId => {
+    if (timers[tabId]) {
+        clearInterval(timers[tabId].interval);
+        delete timers[tabId];
     }
-  });
-  
-  chrome.alarms.onAlarm.addListener((alarm) => {
-    chrome.storage.local.get("tabId", (data) => {
-      chrome.notifications.create({
-        type: "basic",
-        iconUrl: "icon.png",
-        title: "Time to return to your tab!",
-        message: "Your timer has finished. Please return to your tab to continue working."
-      });
-    });
-  });
-  
+});
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'startTimer') {
+        startTimer(request.tabId);
+    }
+});
+
+function startTimer(tabId) {
+    if (!timers[tabId]) {
+        timers[tabId] = { startTime: Date.now(), interval: null };
+        timers[tabId].interval = setInterval(() => updateIcon(tabId), 1000);
+    }
+}
+
+function updateIcon(tabId) {
+    if (timers[tabId]) {
+        let elapsed = Math.floor((Date.now() - timers[tabId].startTime) / 1000);
+        let minutes = Math.floor(elapsed / 60);
+        let seconds = elapsed % 60;
+        let text = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        chrome.action.setBadgeText({ text, tabId });
+    } else {
+        chrome.action.setBadgeText({ text: '', tabId });
+    }
+}

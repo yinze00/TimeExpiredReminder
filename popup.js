@@ -1,9 +1,5 @@
-document.getElementById("startTimer").addEventListener("click", () => {
-    const minutes = parseInt(document.getElementById("minutes").value);
-    const milliseconds = minutes * 60 * 1000;
-
-    chrome.storage.local.get("tabId", (data) => {
-        chrome.alarms.create({ delayInMinutes: minutes });
-        window.close();
+document.getElementById('startTimer').addEventListener('click', () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        chrome.runtime.sendMessage({ action: 'startTimer', tabId: tabs[0].id });
     });
 });
