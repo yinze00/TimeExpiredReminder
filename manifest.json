@@ -6,7 +6,8 @@
     "description": "Track time spent on each tab.",
     "permissions": [
         "tabs",
-        "storage"
+        "storage",
+        "notifications"
     ],
     "background": {
         "service_worker": "background.js"

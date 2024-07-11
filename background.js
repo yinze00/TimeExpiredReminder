@@ -36,6 +36,23 @@ function updateIcon(tabId) {
             chrome.action.setBadgeText({ text: '0:00', tabId });
             clearInterval(timers[tabId].interval);
             delete timers[tabId];
+
+            // Switch to the tab
+            chrome.tabs.update(tabId, { active: true }, () => {
+                // Show notification
+                chrome.notifications.create('', {
+                    type: 'basic',
+                    iconUrl: 'clock48.png',
+                    title: 'Tab Timer Finished',
+                    message: `The timer for tab ${tabId} has finished!`
+                }, (notificationId) => {
+                    if (chrome.runtime.lastError) {
+                        console.error(chrome.runtime.lastError);
+                    } else {
+                        console.log('Notification shown with ID:', notificationId);
+                    }
+                });
+            });
         } else {
             let minutes = Math.floor(remaining / 60000);
             let seconds = Math.floor((remaining % 60000) / 1000);
