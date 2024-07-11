@@ -1,0 +1,27 @@
+{
+    "manifest_version": 3,
+    "name": "Tab Reminder",
+    "version": "1.0",
+    "description": "Set a timer to remind you to return to a specific tab.",
+    "permissions": [
+        "tabs",
+        "alarms",
+        "notifications",
+        "storage"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "popup.html"
+    },
+    "commands": {
+        "open-timer-popup": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+K",
+                "mac": "Command+Shift+K"
+            },
+            "description": "Open the timer popup"
+        }
+    }
+}
