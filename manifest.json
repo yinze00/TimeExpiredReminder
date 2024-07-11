@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Tab Timer",
+    "name": "Tab Reminder",
     "author": "junwei.wang@zju.edu.cn",
     "version": "1.0",
     "description": "Track time spent on each tab.",
