@@ -15,7 +15,23 @@ chrome.tabs.onRemoved.addListener(tabId => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'startTimer') {
-        startTimer(request.tabId, request.minutes);
+        startTimer(request.tabId, request.minutes, request.seconds);
+    }
+});
+
+chrome.commands.onCommand.addListener(function (command) {
+    if (command === "start-timer") {
+        console.log('sdfasdfa;;;;;;;;;');
+        // chrome.browserAction.openPopup()
+
+        // chrome.action.open();
+        // chrome.tabs.create({ url: chrome.runtime.getURL("popup.html") });
+
+        // let minutes = prompt("Enter the number of minutes for the timer:");
+        // if (minutes) {
+        //     // let ms = parseInt(minutes, 10) * 60 * 1000; // 转换为毫秒
+        //     // setTimer(ms);
+        // }
     }
 });
 
@@ -61,12 +77,12 @@ function createNotification(tabId, title) {
 }
 
 
-function startTimer(tabId, minutes) {
+function startTimer(tabId, minutes, seconds) {
     if (timers[tabId]) {
         clearInterval(timers[tabId].interval);
     }
 
-    timers[tabId] = { endTime: Date.now() + minutes * 60000, interval: null };
+    timers[tabId] = { endTime: Date.now() + minutes * 60000 + seconds * 1000, interval: null };
     timers[tabId].interval = setInterval(() => updateIcon(tabId), 1000);
     updateIcon(tabId);  // Immediately update the icon
 }
@@ -83,40 +99,10 @@ function updateIcon(tabId) {
             getTabTitle(tabId)
                 .then(title => {
                     createNotification(tabId, title)
-                    // chrome.tabs.update(tabId, { active: true }, () => {
-                    //     // Show notification
-                    //     chrome.notifications.create('', {
-                    //         type: 'basic',
-                    //         iconUrl: 'urgent.png',
-                    //         title: '快看一眼 ',
-                    //         message: `${title}`
-                    //     }, (notificationId) => {
-                    //         if (chrome.runtime.lastError) {
-                    //             console.error(chrome.runtime.lastError);
-                    //         } else {
-                    //             console.log('Notification shown with ID:', notificationId);
-                    //         }
-                    //     });
-                    // });
                 })
                 .catch(error => {
                     console.error('Error fetching tab title:', error.message);
                 });
-            // chrome.tabs.update(tabId, { active: true }, () => {
-            //     // Show notification
-            //     chrome.notifications.create('', {
-            //         type: 'basic',
-            //         iconUrl: 'clock48.png',
-            //         title: 'Tab Timer Finished',
-            //         message: `The timer for tab ${tabId} has finished!`
-            //     }, (notificationId) => {
-            //         if (chrome.runtime.lastError) {
-            //             console.error(chrome.runtime.lastError);
-            //         } else {
-            //             console.log('Notification shown with ID:', notificationId);
-            //         }
-            //     });
-            // });
         } else {
             let minutes = Math.floor(remaining / 60000);
             let seconds = Math.floor((remaining % 60000) / 1000);
