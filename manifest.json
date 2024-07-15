@@ -6,7 +6,6 @@
     "description": "Add a countdown to a web page to remind you to view it in time",
     "permissions": [
         "tabs",
-        "storage",
         "notifications"
     ],
     "background": {
